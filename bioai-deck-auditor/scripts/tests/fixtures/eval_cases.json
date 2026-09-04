@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "cases": [
+    {
+      "id": "E-001",
+      "input": "Deck claims 30 customers; appendix lists 12 paid and 18 pilots.",
+      "must_observe": ["customer definition differs", "12 paid", "18 pilots"],
+      "forbidden_conclusions": ["fraud confirmed"],
+      "expected_status": "deck_only"
+    },
+    {
+      "id": "E-002",
+      "input": "A keyword trial search returns a similarly named study from another sponsor.",
+      "must_observe": ["sponsor mismatch", "candidate only"],
+      "forbidden_conclusions": ["trial verified"],
+      "expected_status": "candidate"
+    },
+    {
+      "id": "E-003",
+      "input": "A founder paper predates incorporation; an executed exclusive license assigns it to the company.",
+      "must_observe": ["license supports company access", "founder capability"],
+      "forbidden_conclusions": ["paper has no company relevance"],
+      "expected_status": "verified"
+    },
+    {
+      "id": "E-004",
+      "input": "A province lists a hospital BCI service price; the company has no revenue-share contract.",
+      "must_observe": ["hospital service price", "company revenue not established"],
+      "forbidden_conclusions": ["price equals company revenue"],
+      "expected_status": "verified"
+    },
+    {
+      "id": "E-005",
+      "input": "Three line items sum to 9.8m while the stated total is 10.0m; rounding policy is absent.",
+      "must_observe": ["0.2m arithmetic difference", "rounding unknown"],
+      "forbidden_conclusions": ["intentional misstatement confirmed"],
+      "expected_status": "deck_only"
+    },
+    {
+      "id": "E-006",
+      "input": "An FDA record exactly matches applicant, device, indication and clearance number.",
+      "must_observe": ["exact field match", "scope limited to cleared indication"],
+      "forbidden_conclusions": ["all product claims clinically proven"],
+      "expected_status": "verified"
+    },
+    {
+      "id": "E-007",
+      "input": "A SaaS module only receives data from an unapproved proprietary device.",
+      "must_observe": ["conditional dependency", "device milestone probability affects SaaS"],
+      "forbidden_conclusions": ["independent values can be mechanically added"],
+      "expected_status": "deck_only"
+    },
+    {
+      "id": "E-008",
+      "input": "No public patent record is found after name and assignee searches; application numbers are redacted.",
+      "must_observe": ["search limitations", "request application numbers"],
+      "forbidden_conclusions": ["patents do not exist"],
+      "expected_status": "unable_to_verify"
+    },
+    {
+      "id": "E-009",
+      "input": "A chart displays revenue labels of 3, 8 and 16 million while its cached workbook values are 6, 15 and 30 million.",
+      "must_observe": ["visual and cached chart values conflict", "valuation basis is ambiguous"],
+      "forbidden_conclusions": ["choose the larger values without clarification"],
+      "expected_status": "contradicted"
+    },
+    {
+      "id": "E-010",
+      "input": "The financing entity was formed in 2025, but the deck attributes 2024 revenue and a registration held by an affiliated company to it.",
+      "must_observe": ["entity perimeter mismatch", "request consolidation and license agreements"],
+      "forbidden_conclusions": ["assets and revenue automatically belong to financing entity"],
+      "expected_status": "deck_only"
+    },
+    {
+      "id": "E-011",
+      "input": "A device company reports 50 hospitals as trial/install sites and 30 units shipped without active-use or payment cohorts.",
+      "must_observe": ["trial and installed are combined", "active use and payment are unknown"],
+      "forbidden_conclusions": ["50 paying active customers"],
+      "expected_status": "deck_only"
+    },
+    {
+      "id": "E-012",
+      "input": "An open-source drug model leads public benchmarks; the deck claims commercial value without wet-lab, customer ROI or renewal data.",
+      "must_observe": ["benchmark evidence is positive", "commercial and wet-lab bridge is missing"],
+      "forbidden_conclusions": ["benchmark leadership proves drug-development ROI", "open source means no value"],
+      "expected_status": "deck_only"
+    }
+  ]
+}

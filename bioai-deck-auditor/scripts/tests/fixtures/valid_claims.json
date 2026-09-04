@@ -1,0 +1,30 @@
+{
+  "document": {
+    "name": "sample-deck.pdf",
+    "date": "2026-01-01",
+    "version": "v1",
+    "pages": 10
+  },
+  "claims": [
+    {
+      "claim_id": "C-001",
+      "slide": 3,
+      "verbatim": "已进入四家三甲医院",
+      "normalized_claim": "公司声称已进入四家三甲医院",
+      "claim_type": "commercial",
+      "product": "产品A",
+      "jurisdiction": "CN",
+      "period": null,
+      "unit": "医院",
+      "deck_evidence": "logo_wall",
+      "ocr_confidence": "not_applicable",
+      "verification_status": "deck_unverified",
+      "external_sources": [],
+      "evidence_grade": "D",
+      "impact": "high",
+      "confidence": "low",
+      "counterevidence": [],
+      "next_action": "索取合同、采购订单和回款凭证"
+    }
+  ]
+}

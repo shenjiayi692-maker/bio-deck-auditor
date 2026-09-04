@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bioai-deck-auditor:claim-ledger:1.0",
+  "title": "BioAI deck claim ledger",
+  "type": "object",
+  "required": ["document", "claims"],
+  "properties": {
+    "document": {
+      "type": "object",
+      "required": ["name", "pages"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "date": {"type": ["string", "null"]},
+        "audit_as_of": {"type": ["string", "null"]},
+        "version": {"type": ["string", "null"]},
+        "pages": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "required": [
+        "claim_id", "slide", "verbatim", "normalized_claim",
+        "claim_type", "verification_status", "evidence_grade",
+        "impact", "confidence", "next_action"
+      ],
+      "properties": {
+        "claim_id": {"type": "string", "pattern": "^C-[0-9]{3,}$"},
+        "slide": {
+          "oneOf": [
+            {"type": "integer", "minimum": 1},
+            {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 1, "uniqueItems": true}
+          ]
+        },
+        "verbatim": {"type": "string", "minLength": 1},
+        "normalized_claim": {"type": "string", "minLength": 1},
+        "claim_type": {
+          "enum": ["technical", "clinical", "regulatory", "commercial", "financial", "market", "ip", "team", "roadmap", "endorsement", "valuation", "other"]
+        },
+        "entity": {"type": ["string", "null"]},
+        "product": {"type": ["string", "null"]},
+        "product_version": {"type": ["string", "null"]},
+        "temporality": {"enum": ["historical", "current", "forecast", "unknown"]},
+        "jurisdiction": {"type": ["string", "null"]},
+        "period": {"type": ["string", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "deck_evidence": {"type": ["string", "null"]},
+        "ocr_confidence": {"enum": ["high", "medium", "low", "not_applicable"]},
+        "verification_status": {"enum": ["deck_unverified", "candidate", "verified", "contradicted", "unverifiable"]},
+        "external_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source", "accessed", "matched_fields"],
+            "properties": {
+              "source": {"type": "string"},
+              "url": {"type": ["string", "null"]},
+              "accessed": {"type": "string"},
+              "matched_fields": {"type": "array", "items": {"type": "string"}}
+            },
+            "additionalProperties": false
+          }
+        },
+        "evidence_grade": {"enum": ["A", "B", "C", "D", "E"]},
+        "impact": {"enum": ["critical", "high", "medium", "low", "unknown"]},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "counterevidence": {"type": "array", "items": {"type": "string"}},
+        "next_action": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

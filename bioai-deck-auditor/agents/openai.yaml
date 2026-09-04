@@ -1,0 +1,7 @@
+interface:
+  display_name: "BioAI Deck Auditor"
+  short_description: "逐页核查生物医疗融资材料的技术、监管、商业证据与估值"
+  default_prompt: "Use $bioai-deck-auditor to audit this deck claim by claim and produce an evidence-calibrated investment report."
+
+policy:
+  allow_implicit_invocation: true

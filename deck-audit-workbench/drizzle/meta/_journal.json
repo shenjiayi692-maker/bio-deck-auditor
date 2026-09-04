@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1784812684699,
+      "tag": "0000_strong_stone_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784846558675,
+      "tag": "0001_bizarre_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784847283423,
+      "tag": "0002_sharp_terror",
+      "breakpoints": true
+    }
+  ]
+}

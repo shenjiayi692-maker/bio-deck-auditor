@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "check_id": "N-001",
+      "type": "sum",
+      "values": [100, 200, 300],
+      "stated": 600,
+      "unit": "万元",
+      "slides": [8, 12]
+    },
+    {
+      "check_id": "N-002",
+      "type": "ratio",
+      "numerator": 1700,
+      "denominator": 0.12,
+      "stated": 15000,
+      "relative_tolerance": 0.01,
+      "unit": "万元",
+      "slides": [15]
+    }
+  ]
+}
