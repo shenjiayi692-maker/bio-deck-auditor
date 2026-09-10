@@ -1,70 +1,150 @@
-# Bio/MedTech Deck Auditor
+<p align="center">
+  <img src="./assets/readme/hero.gif" width="100%" alt="Bio/MedTech Deck Auditor turns fundraising decks into traceable claims, source-backed evidence, and reviewable decisions">
+</p>
 
-给生物科技、创新药、医疗器械、医疗 AI、脑机接口和健康 SaaS 的融资材料做投资初筛：把 deck 拆成**逐条可验证的宣称**，尽可能拉外部锚点核实，然后分技术 / 临床监管 / 商业 / 团队治理 / 资本五层出报告。
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="./bioai-deck-auditor/">Audit skill</a> ·
+  <a href="./deck-audit-workbench/">Review workbench</a> ·
+  <a href="./outputs/">Sample reports</a>
+</p>
 
-核心约束只有一条：**区分"材料这么说"、"外部证据这么说"和"我据此判断"**。三者在报告里用不同的标记，不允许混写。
+Bio/MedTech Deck Auditor is an evidence-calibrated diligence workflow for biotech, therapeutics, medical devices, healthcare AI, BCI, and health SaaS fundraising materials. It turns a deck into atomic, testable claims and evaluates them across technology, clinical/regulatory, commercial, team/governance, and capital.
 
-> 本仓库的分析产物是投资初筛材料，不构成投资、法律、医疗或监管意见。
+> [!IMPORTANT]
+> The core rule is simple: keep **what the deck claims**, **what external evidence supports**, and **what the analyst concludes** visibly separate. This project supports investment screening; it is not investment, legal, medical, or regulatory advice.
 
-## 仓库里有什么
+## From narrative to an audit trail
 
-| | 是什么 | 状态 |
-|---|---|---|
-| [`bioai-deck-auditor/`](bioai-deck-auditor/) | 审计方法论本体：一份 7 步流程的 SKILL + 41 份领域/辖区参考 + 7 个核查脚本 | ✅ 可用 |
-| [`deck-audit-workbench/`](deck-audit-workbench/) | 人工复核工作台。上传 deck → 逐条宣称过审 → 导出 md/pptx 报告（Next.js on Cloudflare Workers + D1） | 🚧 可跑，未上线 |
-| [`outputs/`](outputs/) | 三家公司的初筛报告样本，以及一次[三份 deck 的盲测复盘](outputs/three-deck-blind-audit-2026-07-17.md) | 📄 样本 |
+<p align="center">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="Five-stage workflow: ingest a deck, atomize claims, verify primary-source anchors, complete human review, and export an auditable report">
+</p>
 
-## 方法：为什么是"宣称台账"而不是"看完写观点"
+The workflow starts with a claim ledger—not an opinion. Every material claim keeps its slide, original wording, legal entity, product or version, time attribute, jurisdiction, evidence type, and review status. Only then does the system form a judgment in a fixed shape:
 
-一份 deck 的问题很少是某句话说错了，而是**跨页口径对不上**、**证据强度和结论强度不匹配**、**主体边界被悄悄跨过**。所以流程的第一步不是判断，是建台账——每条宣称都必须带上页码、原文、类型、法律实体、产品/版本、时间属性、辖区、证据形态。
+```text
+evidence → reasoning → impact → disconfirming condition → next verification step
+```
 
-然后才允许下判断，且判断有固定形状：**证据 → 推理 → 影响 → 反证条件 → 下一步核实动作**。
+Evidence status and risk severity are deliberately independent. A high-impact red flag can have low confidence; missing information remains a verification item unless the omission itself violates a disclosure, regulatory, or stage-specific expectation.
 
-几条从实际审计里长出来的规则：
+## Real materials, reviewable outputs
 
-- **事实分五档**：`[据 deck·未核实]` / `[候选记录·尚未匹配]` / `[已核实·来源]` / `[与 deck 矛盾·来源]` / `[无法核实·已说明尝试]`。关键词检索命中只算"候选"，实体、申办方、状态、时间逐项对上才能升级为"已核实"。**查不到不等于不存在**。
-- **红旗严重度和证据置信度分开打分**。🔴🟠🟡 说的是潜在影响，高/中/低说的是我有多确定。缺信息默认是待核实项，不自动等于红旗。
-- **商业证据分层不许合并计数**：线索/科研合作 → 试用 → 合同 → 验收装机 → 回款 → 活跃使用 → 复购。"合作 30 家医院"和"回款 30 家医院"差着五个台阶。
-- **估值按数据量降级输出**：够了才做 rNPV；概率稀薄就给情景区间；再不够就只反推"当前估值隐含哪些里程碑必须达成"，绝不输出"高估 N 倍"。
-- **注册证只核实矩阵里的那一格**。多产品公司先建"法律实体—产品 SKU—版本—注册证—适用范围—生产主体—收入"矩阵，一张证不向别的适应症、别的模块、关联公司外推。
+<p align="center">
+  <img src="./deck-audit-workbench/public/demo-shuimu-7.png" width="32%" alt="Source slide from the Shuimu Molecular deck">
+  <img src="./deck-audit-workbench/public/demo-shimei-19.png" width="32%" alt="Source slide from the Shimei medical ultrasound deck">
+  <img src="./deck-audit-workbench/public/demo-liuyedao-16.png" width="32%" alt="Source slide from the Lancet Robotics deck">
+</p>
 
-## 自动化到哪一步
+The repository includes three end-to-end screening examples and a blind-test retrospective:
 
-不是全自动，而且哪些能自动是被数据源决定的：
+| Case | Markdown report | PPTX report |
+| --- | --- | --- |
+| Lancet Robotics | [Read the report](./outputs/reports/lancet-robotics-initial-screening.md) | [Download](./outputs/reports/lancet-robotics-initial-screening.pptx) |
+| Shimei | [Read the report](./outputs/reports/shimei-initial-screening.md) | [Download](./outputs/reports/shimei-initial-screening.pptx) |
+| Shuimu Molecular | [Read the report](./outputs/reports/shuimu-molecular-initial-screening.md) | [Download](./outputs/reports/shuimu-molecular-initial-screening.pptx) |
 
-| 核查项 | 脚本 | 可靠度 |
-|---|---|---|
-| PDF/PPTX 文本、备注、图表值、嵌入媒体清单提取 | `extract_deck.py` | 机器抽取**不能**替代逐页视觉复核 |
-| 跨页数字交叉验算 | `cross_check_numbers.py` | ✅ 确定性 |
-| 论文与引用 | `verify_refs.py` | ✅ 公开 API |
-| 临床试验 | `verify_trials.py` | ClinicalTrials.gov ✅ 有公开 API；ChiCTR ⚠️ 无 API，靠爬，可能卡验证码，失败退人工并给出检索 URL |
-| 专利 | `verify_patents.py` | 半自动，出候选清单供人工确认 |
-| 中国监管线索 | `cn_reg_sources/` | 仅在脚本自报的能力边界内使用 |
+[Read the three-deck blind-test retrospective →](./outputs/three-deck-blind-audit-2026-07-17.md)
 
-## 已知不足
+## What is in the repository
 
-[三份 deck 的盲测复盘](outputs/three-deck-blind-audit-2026-07-17.md) 的结论是：这套东西目前更像一个**质量不错的 analyst copilot 原型**，还不是能稳定交付给基金团队的产品。
+| Path | Purpose | Status |
+| --- | --- | --- |
+| [`bioai-deck-auditor/`](./bioai-deck-auditor/) | Seven-step agent skill with 10 domain packs, three jurisdiction guides, 41 reference files, and seven verification scripts | Usable |
+| [`deck-audit-workbench/`](./deck-audit-workbench/) | Human review surface: upload a deck, review claims, inspect evidence, record decisions, and export Markdown/PPTX | Runnable prototype; not deployed |
+| [`outputs/`](./outputs/) | Three screening reports plus one blind-test retrospective | Sample evidence |
 
-已经比较强的是逐页拆宣称、内部数字检查、论文/注册锚点核验、证据分级和创始人追问生成。必须补强的是法律实体与资产归属、产品—版本—证书的对应关系、图表底层数据检查、真实商业化漏斗、制造与上市后质量。**尚未产品化**的是实时市场数据层、资本回报模型、可交互人工复核工作台和持续回归评测。
+## What the auditor checks
 
-下一步的优先级不是拿更多 deck 去微调模型，而是先把事实数据层、评估数据模型、人工复核闭环和基准集做扎实。
+- **Technology and science** — study design, benchmarks, external validation, failure modes, reproducibility, and the path from model performance to real-world value.
+- **Clinical, regulatory, and data** — intended use, product/version boundaries, trial and registration anchors, privacy, quality systems, complaints, recalls, and post-market evidence.
+- **Commercial quality** — separates leads, research collaborations, pilots, contracts, installation, acceptance, payment, active use, and renewal instead of merging them into one “customer” count.
+- **Team and governance** — key-person commitment, capability gaps, IP ownership, technology transfer, related parties, cap table, runway, and milestone alignment.
+- **Capital and transaction** — financing evidence, valuation definitions, comparable-company dates and currencies, dilution, working capital, exit constraints, and return assumptions.
 
-## 关于 `outputs/` 里的材料
+For multi-product companies, the auditor builds a legal-entity → SKU → version → certificate → intended-use → manufacturer → revenue matrix. A certificate verifies only the matching cell; it does not automatically cover adjacent products, indications, modules, or related companies.
 
-报告是本仓库作者的独立分析。`deck-audit-workbench/public/` 下的三张示例截图取自被分析公司的原始材料，用于展示工作台的复核界面。
+## Automation boundary
 
-## 跑起来
+| Check | Tooling | Boundary |
+| --- | --- | --- |
+| PDF/PPTX text, notes, cached chart values, links, and embedded-media inventory | `extract_deck.py` | Machine extraction never replaces page-by-page visual review |
+| Cross-slide arithmetic | `cross_check_numbers.py` | Deterministic when the inputs are structured |
+| Papers and citations | `verify_refs.py` | Uses public APIs; title matches remain candidates until identity fields align |
+| Clinical trials | `verify_trials.py` | ClinicalTrials.gov is API-backed; ChiCTR may require manual fallback |
+| Patents | `verify_patents.py` | Produces candidates for analyst confirmation |
+| Chinese regulatory leads | `cn_reg_sources/` | Used only within each source adapter's stated capability |
 
-审计脚本：
+Valuation output is data-dependent: full rNPV when stage probabilities and conditional cash flows are defensible; scenario ranges when probabilities are sparse; implied-milestone analysis when the deck does not support a numeric valuation.
+
+## Quick start
+
+### Install the agent skill
+
+```bash
+npx skills add https://github.com/shenjiayi692-maker/bio-deck-auditor \
+  --skill bioai-deck-auditor
+```
+
+Then invoke it with a deck attached:
+
+```text
+Use $bioai-deck-auditor to audit this deck claim by claim and produce an evidence-calibrated investment screening report.
+```
+
+### Run deterministic deck extraction
+
+```bash
+git clone https://github.com/shenjiayi692-maker/bio-deck-auditor.git
+cd bio-deck-auditor/bioai-deck-auditor/scripts
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+python extract_deck.py /path/to/deck.pptx -o extracted-deck.json
+python validate_claims.py /path/to/claim-ledger.json
+python cross_check_numbers.py /path/to/number-checks.json
+```
+
+### Run the review workbench
+
+The workbench requires Node.js `>=22.13.0`, the project-declared local D1/R2 bindings, and an OpenAI API key.
+
+```bash
+cd deck-audit-workbench
+npm install
+cp .dev.vars.example .dev.vars
+npm run dev
+```
+
+For production, provide `OPENAI_API_KEY` through the hosting platform's environment settings. Do not commit it to the repository.
+
+## Current limitations
+
+This is an analyst-copilot prototype, not an autonomous investment committee. Claim extraction, arithmetic checks, source calibration, and founder-question generation are the strongest parts today. The entity/asset boundary, product-version-certificate mapping, chart forensics, commercialization funnel, manufacturing and post-market quality, live market data, capital-return modeling, multi-user review, authentication, quotas, retries, and continuous regression evaluation still need further productization.
+
+The workbench currently has no authentication, quota controls, or collaborative conflict handling. Anyone with its URL could upload and review files, so do not expose an unconfigured deployment to sensitive materials.
+
+## Development
+
+Run the verification suite:
 
 ```bash
 cd bioai-deck-auditor/scripts
-pip install -r requirements.txt
-python extract_deck.py <deck.pdf|deck.pptx>
+python3 -m unittest discover -s tests -p 'test_*.py'
+
+cd ../../deck-audit-workbench
+npm test
+npm run lint
 ```
 
-工作台见 [`deck-audit-workbench/README.md`](deck-audit-workbench/README.md)。
+The workbench uses Next.js 16 on Cloudflare Workers via vinext, D1 + Drizzle for structured state, R2 for source decks and generated reports, the OpenAI Responses API for structured analysis, and `pptxgenjs` for compact PPTX exports.
 
-## 许可
+## Source-material note
 
-MIT，见 [LICENSE](LICENSE)。参考资料中引用的法规与第三方来源版权归原权利人。
+The reports in `outputs/` are independent analyses by the repository author. The three source-slide images shown above come from the analyzed companies' original materials and are included only to demonstrate the review workflow; their copyrights remain with their respective owners.
+
+## License
+
+[MIT](./LICENSE). Referenced regulations, third-party sources, and source-deck materials remain the property of their respective rights holders.

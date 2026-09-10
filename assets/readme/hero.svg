@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">Bio/MedTech Deck Auditor</title>
+  <desc id="desc">An evidence-calibrated diligence workflow that turns a fundraising deck into atomic claims, external evidence, and human review decisions.</desc>
+  <defs>
+    <clipPath id="frame"><rect width="1200" height="400" rx="28"/></clipPath>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A9992"/>
+    </marker>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="400" fill="#F4F1EA"/>
+    <rect x="0" y="0" width="14" height="400" fill="#0B7254"/>
+    <path d="M682 0V400" stroke="#D7D8D1" stroke-width="1"/>
+    <path d="M39 339H652" stroke="#D7D8D1" stroke-width="1"/>
+
+    <g id="title-block" transform="translate(54 46)">
+      <text x="0" y="0" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="700" letter-spacing="2.2" fill="#0B7254">AI-ASSISTED INVESTMENT DILIGENCE</text>
+      <text x="0" y="58" dominant-baseline="hanging" font-family="Georgia, Times New Roman, serif" font-size="60" font-weight="700" fill="#113B30">Bio/MedTech</text>
+      <text x="0" y="124" dominant-baseline="hanging" font-family="Georgia, Times New Roman, serif" font-size="60" font-weight="700" fill="#113B30">Deck Auditor</text>
+      <rect x="0" y="205" width="66" height="5" rx="2.5" fill="#D39A2F"/>
+      <text x="0" y="230" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="600" fill="#33473F">Turn fundraising decks into traceable claims,</text>
+      <text x="0" y="260" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="600" fill="#33473F">source-backed evidence, and reviewable decisions.</text>
+    </g>
+
+    <g id="metadata" transform="translate(54 359)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700" letter-spacing="1" fill="#596B63">
+      <text x="0" y="0">10 DOMAIN PACKS</text>
+      <circle cx="171" cy="-5" r="3" fill="#D39A2F"/>
+      <text x="191" y="0">3 JURISDICTIONS</text>
+      <circle cx="371" cy="-5" r="3" fill="#D39A2F"/>
+      <text x="391" y="0">7 VERIFICATION SCRIPTS</text>
+    </g>
+
+    <g id="flow-lines" fill="none" stroke="#8A9992" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M831 124H866"/>
+      <path d="M1015 244V278"/>
+    </g>
+
+    <g id="deck-card" transform="translate(716 58)">
+      <rect width="115" height="132" rx="16" fill="#FFFFFF" stroke="#C8CEC8"/>
+      <text x="16" y="19" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" font-weight="800" fill="#0B7254">01 / DECK</text>
+      <rect x="16" y="49" width="83" height="62" rx="7" fill="#EEF1EC" stroke="#D7DCD6"/>
+      <rect x="27" y="61" width="46" height="5" rx="2.5" fill="#60736B"/>
+      <rect x="27" y="74" width="60" height="4" rx="2" fill="#B5BEB8"/>
+      <rect x="27" y="85" width="53" height="4" rx="2" fill="#B5BEB8"/>
+      <rect x="27" y="96" width="35" height="4" rx="2" fill="#D39A2F"/>
+      <text x="16" y="117" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#617169">PDF · PPTX</text>
+    </g>
+
+    <g id="evidence-card" transform="translate(868 42)">
+      <rect width="278" height="202" rx="18" fill="#FFFFFF" stroke="#BFC8C1"/>
+      <text x="18" y="18" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" font-weight="800" fill="#0B7254">02 / CLAIM LEDGER</text>
+      <path d="M18 48H260" stroke="#DDE1DC"/>
+
+      <g transform="translate(18 65)">
+        <rect width="242" height="34" rx="8" fill="#F6F7F4"/>
+        <text x="12" y="9" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#233D34">TECH</text>
+        <rect x="121" y="6" width="108" height="22" rx="6" fill="#FFF0D5"/>
+        <text x="175" y="11" text-anchor="middle" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="800" fill="#986816">DECK ONLY</text>
+      </g>
+      <g transform="translate(18 108)">
+        <rect width="242" height="34" rx="8" fill="#F6F7F4"/>
+        <text x="12" y="9" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#233D34">REG</text>
+        <rect x="121" y="6" width="108" height="22" rx="6" fill="#DDEFE7"/>
+        <text x="175" y="11" text-anchor="middle" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="800" fill="#0B7254">VERIFIED</text>
+      </g>
+      <g transform="translate(18 151)">
+        <rect width="242" height="34" rx="8" fill="#F6F7F4"/>
+        <text x="12" y="9" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#233D34">MARKET</text>
+        <rect x="121" y="6" width="108" height="22" rx="6" fill="#F6DFDA"/>
+        <text x="175" y="11" text-anchor="middle" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="800" fill="#A44C3D">CONFLICT</text>
+      </g>
+    </g>
+
+    <g id="review-stamp" transform="translate(846 280)">
+      <rect width="300" height="76" rx="16" fill="#103E32"/>
+      <circle cx="37" cy="38" r="19" fill="#D39A2F"/>
+      <path d="M28 38l7 7 13-16" fill="none" stroke="#103E32" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="70" y="15" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="700" letter-spacing="1.4" fill="#B9D6CC">HUMAN REVIEW</text>
+      <text x="70" y="38" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">Risk ≠ confidence</text>
+    </g>
+  </g>
+</svg>

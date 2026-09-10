@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Bio/MedTech Deck Auditor social preview</title>
+  <desc id="desc">A project preview showing a fundraising deck transformed into a claim ledger, verified evidence, and human review.</desc>
+  <rect width="1280" height="640" fill="#F4F1EA"/>
+  <rect x="0" y="0" width="18" height="640" fill="#0B7254"/>
+  <text x="72" y="66" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="800" letter-spacing="2.5" fill="#0B7254">AI-ASSISTED INVESTMENT DILIGENCE</text>
+  <text x="72" y="125" dominant-baseline="hanging" font-family="Georgia, Times New Roman, serif" font-size="76" font-weight="700" fill="#113B30">Bio/MedTech</text>
+  <text x="72" y="207" dominant-baseline="hanging" font-family="Georgia, Times New Roman, serif" font-size="76" font-weight="700" fill="#113B30">Deck Auditor</text>
+  <rect x="72" y="310" width="74" height="6" rx="3" fill="#D39A2F"/>
+  <text x="72" y="346" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="25" font-weight="650" fill="#344A41">From fundraising narrative to traceable claims,</text>
+  <text x="72" y="382" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="25" font-weight="650" fill="#344A41">source-backed evidence, and reviewable decisions.</text>
+
+  <g transform="translate(710 77)">
+    <rect width="490" height="414" rx="24" fill="#FFFFFF" stroke="#C8CEC8"/>
+    <text x="28" y="24" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="800" fill="#0B7254">EVIDENCE CHAIN / 01—04</text>
+    <path d="M28 60H462" stroke="#DDE1DC"/>
+    <g transform="translate(28 86)">
+      <rect width="122" height="90" rx="14" fill="#EEF1EC"/>
+      <text x="16" y="14" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="800" fill="#0B7254">DECK</text>
+      <rect x="16" y="44" width="70" height="5" rx="2.5" fill="#65756E"/><rect x="16" y="58" width="88" height="4" rx="2" fill="#B5BEB8"/><rect x="16" y="70" width="62" height="4" rx="2" fill="#D39A2F"/>
+    </g>
+    <path d="M166 131H194" stroke="#8A9992" stroke-width="2"/>
+    <g transform="translate(196 86)">
+      <rect width="266" height="90" rx="14" fill="#F7F7F3" stroke="#D5DAD5"/>
+      <text x="16" y="14" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="800" fill="#0B7254">ATOMIC CLAIM</text>
+      <text x="16" y="43" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="18" font-weight="800" fill="#243E35">One entity · one product</text>
+      <text x="16" y="68" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="16" font-weight="650" fill="#64726C">one time · one jurisdiction</text>
+    </g>
+    <g transform="translate(28 202)">
+      <rect width="434" height="48" rx="10" fill="#DDEFE7"/>
+      <text x="18" y="14" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="800" fill="#0B7254">VERIFIED</text>
+      <text x="154" y="13" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="18" font-weight="750" fill="#24443A">Primary-source match</text>
+    </g>
+    <g transform="translate(28 262)">
+      <rect width="434" height="48" rx="10" fill="#F6DFDA"/>
+      <text x="18" y="14" dominant-baseline="hanging" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="800" fill="#A44C3D">CONFLICT</text>
+      <text x="154" y="13" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="18" font-weight="750" fill="#5A3934">Deck and source diverge</text>
+    </g>
+    <g transform="translate(28 334)">
+      <rect width="434" height="52" rx="12" fill="#103E32"/>
+      <circle cx="28" cy="26" r="13" fill="#D39A2F"/>
+      <path d="M22 26l5 5 9-11" fill="none" stroke="#103E32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="54" y="15" dominant-baseline="hanging" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">Analyst decision + audit trail</text>
+    </g>
+  </g>
+
+  <g transform="translate(72 553)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="800" letter-spacing="1.2" fill="#5D6D66">
+    <text x="0" y="0">10 DOMAIN PACKS</text><circle cx="197" cy="-5" r="3" fill="#D39A2F"/>
+    <text x="220" y="0">3 JURISDICTIONS</text><circle cx="428" cy="-5" r="3" fill="#D39A2F"/>
+    <text x="451" y="0">41 REFERENCE FILES</text><circle cx="676" cy="-5" r="3" fill="#D39A2F"/>
+    <text x="699" y="0">MIT</text>
+  </g>
+</svg>
