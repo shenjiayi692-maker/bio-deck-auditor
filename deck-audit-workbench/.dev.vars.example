@@ -1,2 +1,2 @@
-# Local development only. Copy to .dev.vars and add a project API key.
-OPENAI_API_KEY=
+# Local development only. Copy to .dev.vars and add an Anthropic API key.
+ANTHROPIC_API_KEY=

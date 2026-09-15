@@ -25,7 +25,11 @@ export const deckReports = sqliteTable("deck_reports", {
   state: text("state").notNull().default("uploaded"),
   stage: text("stage").notNull().default("文件已接收"),
   progress: integer("progress").notNull().default(5),
-  model: text("model").notNull().default("gpt-5.6-terra"),
+  model: text("model").notNull().default("claude-sonnet-5"),
+  provider: text("provider").notNull().default("anthropic"),
+  providerFileId: text("provider_file_id"),
+  providerJobId: text("provider_job_id"),
+  // Legacy columns are retained so existing local databases migrate safely.
   openaiFileId: text("openai_file_id"),
   responseId: text("response_id"),
   reportJsonKey: text("report_json_key"),

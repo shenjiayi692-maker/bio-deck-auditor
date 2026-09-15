@@ -36,11 +36,11 @@
 
 ```bash
 npm install
-cp .dev.vars.example .dev.vars   # 填入 OPENAI_API_KEY
+cp .dev.vars.example .dev.vars   # 填入 ANTHROPIC_API_KEY
 npm run dev
 ```
 
-生产环境的 `OPENAI_API_KEY` 走托管平台的环境变量，不要提交进仓库。
+生产环境的 `ANTHROPIC_API_KEY` 走托管平台的环境变量，不要提交进仓库。
 
 ```bash
 npm run build        # 验证 vinext 构建产物

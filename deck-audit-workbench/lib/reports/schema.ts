@@ -70,7 +70,10 @@ export const screeningReportSchema = {
       type: "object",
       additionalProperties: false,
       properties: {
-        score: { type: "integer", minimum: 0, maximum: 100 },
+        score: {
+          type: "integer",
+          description: "0–100 的初筛风险调整分，必须在该区间内",
+        },
         judgment: { type: "string" },
         evidence: { type: "array", items: { type: "string" } },
         gaps: { type: "array", items: { type: "string" } },

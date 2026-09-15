@@ -45,7 +45,10 @@ export async function ensureReportTables(db: D1Database) {
         state TEXT NOT NULL DEFAULT 'uploaded',
         stage TEXT NOT NULL DEFAULT '文件已接收',
         progress INTEGER NOT NULL DEFAULT 5,
-        model TEXT NOT NULL DEFAULT 'gpt-5.6-terra',
+        model TEXT NOT NULL DEFAULT 'claude-sonnet-5',
+        provider TEXT NOT NULL DEFAULT 'anthropic',
+        provider_file_id TEXT,
+        provider_job_id TEXT,
         openai_file_id TEXT,
         response_id TEXT,
         report_json_key TEXT,
@@ -74,6 +77,26 @@ export async function ensureReportTables(db: D1Database) {
       .prepare(
         "UPDATE deck_files SET analysis_filename = filename WHERE analysis_filename = ''",
       )
+      .run();
+  }
+  const reportColumns = await db
+    .prepare("PRAGMA table_info(deck_reports)")
+    .all<{ name: string }>();
+  if (!reportColumns.results.some((column) => column.name === "provider")) {
+    await db
+      .prepare(
+        "ALTER TABLE deck_reports ADD COLUMN provider TEXT NOT NULL DEFAULT 'anthropic'",
+      )
+      .run();
+  }
+  if (!reportColumns.results.some((column) => column.name === "provider_file_id")) {
+    await db
+      .prepare("ALTER TABLE deck_reports ADD COLUMN provider_file_id TEXT")
+      .run();
+  }
+  if (!reportColumns.results.some((column) => column.name === "provider_job_id")) {
+    await db
+      .prepare("ALTER TABLE deck_reports ADD COLUMN provider_job_id TEXT")
       .run();
   }
 }
@@ -114,8 +137,9 @@ export async function getReportRecord(db: D1Database, id: string) {
               f.content_type as contentType, f.size,
               f.created_at as createdAt,
               r.state, r.stage, r.progress, r.model,
-              r.openai_file_id as openaiFileId,
-              r.response_id as responseId,
+              r.provider,
+              r.provider_file_id as providerFileId,
+              r.provider_job_id as providerJobId,
               r.report_json_key as reportJsonKey,
               r.markdown_key as markdownKey,
               r.pptx_key as pptxKey,
@@ -138,8 +162,9 @@ export async function getReportRecord(db: D1Database, id: string) {
       stage: string | null;
       progress: number | null;
       model: string | null;
-      openaiFileId: string | null;
-      responseId: string | null;
+      provider: string | null;
+      providerFileId: string | null;
+      providerJobId: string | null;
       reportJsonKey: string | null;
       markdownKey: string | null;
       pptxKey: string | null;

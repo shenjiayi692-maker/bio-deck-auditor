@@ -1,12 +1,15 @@
 import { env } from "cloudflare:workers";
 import { NextResponse } from "next/server";
 import {
-  deleteOpenAIFile,
+  deleteAnthropicBatch,
+  deleteAnthropicFile,
   getReportAnalysis,
+  getReportResult,
   parseCompletedReport,
+  REPORT_MODEL,
   startReportAnalysis,
-  uploadDeckToOpenAI,
-} from "../../../../lib/reports/openai";
+  uploadDeckToAnthropic,
+} from "../../../../lib/reports/anthropic";
 import {
   ensureReportJob,
   ensureReportTables,
@@ -19,7 +22,7 @@ import { renderMarkdown, renderPptx } from "../../../../lib/reports/render";
 type RuntimeEnv = {
   DB?: D1Database;
   DECKS?: R2Bucket;
-  OPENAI_API_KEY?: string;
+  ANTHROPIC_API_KEY?: string;
 };
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -40,10 +43,10 @@ function runtimeOrResponse() {
 export async function POST(_request: Request, context: RouteContext) {
   const resolved = runtimeOrResponse();
   if ("error" in resolved) return resolved.error;
-  const { DB: db, DECKS: bucket, OPENAI_API_KEY: apiKey } = resolved.runtime;
+  const { DB: db, DECKS: bucket, ANTHROPIC_API_KEY: apiKey } = resolved.runtime;
   if (!apiKey) {
     return NextResponse.json(
-      { error: "分析服务尚未配置，请设置 OPENAI_API_KEY" },
+      { error: "分析服务尚未配置，请设置 ANTHROPIC_API_KEY" },
       { status: 503 },
     );
   }
@@ -73,17 +76,28 @@ export async function POST(_request: Request, context: RouteContext) {
   try {
     const object = await bucket.get(record.objectKey);
     if (!object) throw new Error("原始 Deck 文件不存在");
-    const openaiFileId =
-      record.openaiFileId ??
-      (await uploadDeckToOpenAI(
+    let providerFileId = record.providerFileId;
+    if (!providerFileId) {
+      providerFileId = await uploadDeckToAnthropic(
         apiKey,
         await object.arrayBuffer(),
         record.analysisFilename,
         record.contentType,
-      ));
-    const response = await startReportAnalysis(
+      );
+      await db
+        .prepare(
+          `UPDATE deck_reports
+           SET provider = 'anthropic', model = ?, provider_file_id = ?,
+               updated_at = CURRENT_TIMESTAMP
+           WHERE deck_id = ?`,
+        )
+        .bind(REPORT_MODEL, providerFileId, id)
+        .run();
+    }
+    const batch = await startReportAnalysis(
       apiKey,
-      openaiFileId,
+      providerFileId,
+      id,
       record.filename,
       record.contentType,
     );
@@ -91,11 +105,12 @@ export async function POST(_request: Request, context: RouteContext) {
       .prepare(
         `UPDATE deck_reports
          SET state = 'queued', stage = '等待模型分析', progress = 25,
-             openai_file_id = ?, response_id = ?, error_message = NULL,
+             provider = 'anthropic', model = ?, provider_file_id = ?,
+             provider_job_id = ?, error_message = NULL,
              updated_at = CURRENT_TIMESTAMP
          WHERE deck_id = ?`,
       )
-      .bind(openaiFileId, response.id, id)
+      .bind(REPORT_MODEL, providerFileId, batch.id, id)
       .run();
     await db
       .prepare(
@@ -104,6 +119,18 @@ export async function POST(_request: Request, context: RouteContext) {
       .bind(id)
       .run();
   } catch (error) {
+    const latest = await getReportRecord(db, id);
+    if (latest?.providerFileId && !latest.providerJobId) {
+      await deleteAnthropicFile(apiKey, latest.providerFileId);
+      await db
+        .prepare(
+          `UPDATE deck_reports
+           SET provider_file_id = NULL, updated_at = CURRENT_TIMESTAMP
+           WHERE deck_id = ?`,
+        )
+        .bind(id)
+        .run();
+    }
     const message = error instanceof Error ? error.message : "提交分析任务失败";
     await setJobState(db, id, {
       state: "failed",
@@ -120,7 +147,7 @@ export async function POST(_request: Request, context: RouteContext) {
 export async function GET(_request: Request, context: RouteContext) {
   const resolved = runtimeOrResponse();
   if ("error" in resolved) return resolved.error;
-  const { DB: db, DECKS: bucket, OPENAI_API_KEY: apiKey } = resolved.runtime;
+  const { DB: db, DECKS: bucket, ANTHROPIC_API_KEY: apiKey } = resolved.runtime;
   const { id } = await context.params;
   await ensureReportTables(db);
   await ensureReportJob(db, id);
@@ -137,25 +164,29 @@ export async function GET(_request: Request, context: RouteContext) {
   ) {
     return NextResponse.json(recordToView(record));
   }
-  if (!apiKey || !record.responseId) {
+  if (!apiKey || !record.providerJobId) {
     return NextResponse.json(recordToView(record));
   }
 
   try {
-    const response = await getReportAnalysis(apiKey, record.responseId);
-    if (response.status === "queued") {
+    const batch = await getReportAnalysis(apiKey, record.providerJobId);
+    if (batch.processing_status === "in_progress") {
+      const processing = batch.request_counts?.processing ?? 0;
       await setJobState(db, id, {
-        state: "queued",
-        stage: "等待模型分析",
-        progress: 30,
+        state: processing > 0 ? "analyzing" : "queued",
+        stage:
+          processing > 0 ? "正在拆解宣称并核查证据" : "等待模型分析",
+        progress: processing > 0 ? 62 : 30,
       });
-    } else if (response.status === "in_progress") {
-      await setJobState(db, id, {
-        state: "analyzing",
-        stage: "正在拆解宣称并核查证据",
-        progress: 62,
-      });
-    } else if (response.status === "completed") {
+    } else if (batch.processing_status === "ended") {
+      if ((batch.request_counts?.succeeded ?? 0) < 1) {
+        const failedState = batch.request_counts?.errored
+          ? "模型分析发生错误"
+          : batch.request_counts?.expired
+            ? "模型分析任务已过期"
+            : "模型分析任务未成功完成";
+        throw new Error(failedState);
+      }
       const claim = await db
         .prepare(
           `UPDATE deck_reports
@@ -166,7 +197,8 @@ export async function GET(_request: Request, context: RouteContext) {
         .bind(id)
         .run();
       if ((claim.meta.changes ?? 0) > 0) {
-        const report = parseCompletedReport(response);
+        const result = await getReportResult(apiKey, record.providerJobId, id);
+        const report = parseCompletedReport(result);
         const markdown = renderMarkdown(report);
         const pptx = await renderPptx(report);
         const baseKey = `reports/${id}`;
@@ -204,20 +236,28 @@ export async function GET(_request: Request, context: RouteContext) {
           )
           .bind(id)
           .run();
-        if (record.openaiFileId) {
-          await deleteOpenAIFile(apiKey, record.openaiFileId);
-        }
+        await Promise.all([
+          record.providerFileId
+            ? deleteAnthropicFile(apiKey, record.providerFileId)
+            : Promise.resolve(),
+          deleteAnthropicBatch(apiKey, record.providerJobId),
+        ]);
+        await db
+          .prepare(
+            `UPDATE deck_reports
+             SET provider_file_id = NULL, provider_job_id = NULL,
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE deck_id = ?`,
+          )
+          .bind(id)
+          .run();
       }
-    } else {
-      const message =
-        response.error?.message ??
-        response.incomplete_details?.reason ??
-        `模型任务状态：${response.status}`;
+    } else if (batch.processing_status === "canceling") {
       await setJobState(db, id, {
         state: "failed",
-        stage: "报告生成失败",
+        stage: "分析任务已取消",
         progress: 0,
-        error: message,
+        error: "Anthropic 正在取消该任务，请稍后重试",
       });
     }
   } catch (error) {

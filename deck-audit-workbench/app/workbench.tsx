@@ -38,11 +38,11 @@ const statusOptions: ReviewStatus[] = [
   "已驳回",
 ];
 
-const MODEL_FILE_LIMIT = 48 * 1024 * 1024;
+const SERVER_UPLOAD_LIMIT = 48 * 1024 * 1024;
 const CLIENT_PPTX_LIMIT = 500 * 1024 * 1024;
 
 async function prepareDeckUpload(file: File) {
-  if (file.size <= MODEL_FILE_LIMIT) {
+  if (!/\.pptx$/i.test(file.name) && file.size <= SERVER_UPLOAD_LIMIT) {
     return { analysisFile: file, clientExtracted: false };
   }
   if (!/\.pptx$/i.test(file.name)) {
@@ -263,7 +263,7 @@ export function Workbench() {
         contentType: file.type,
         state: "submitting",
         stage:
-          file.size > MODEL_FILE_LIMIT && /\.pptx$/i.test(file.name)
+          /\.pptx$/i.test(file.name)
             ? "正在本地提取逐页文字"
             : "正在上传文件",
         progress: 2,

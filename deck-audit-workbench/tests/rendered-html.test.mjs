@@ -59,18 +59,27 @@ test("removes the starter preview and declares durable storage", async () => {
   await access(templateRoot);
 });
 
-test("implements a durable dual-report generation pipeline", async () => {
-  const [reportRoute, downloadRoute, prompt, schema, migration, packageJson] =
+test("implements a durable Anthropic dual-report generation pipeline", async () => {
+  const [
+    reportRoute,
+    downloadRoute,
+    anthropic,
+    prompt,
+    schema,
+    migration,
+    packageJson,
+  ] =
     await Promise.all([
       readFile(new URL("../app/api/reports/[id]/route.ts", import.meta.url), "utf8"),
       readFile(
         new URL("../app/api/reports/[id]/download/route.ts", import.meta.url),
         "utf8",
       ),
+      readFile(new URL("../lib/reports/anthropic.ts", import.meta.url), "utf8"),
       readFile(new URL("../lib/reports/prompt.ts", import.meta.url), "utf8"),
       readFile(new URL("../db/schema.ts", import.meta.url), "utf8"),
       readFile(
-        new URL("../drizzle/0001_bizarre_satana.sql", import.meta.url),
+        new URL("../drizzle/0003_magenta_joystick.sql", import.meta.url),
         "utf8",
       ),
       readFile(new URL("../package.json", import.meta.url), "utf8"),
@@ -80,10 +89,15 @@ test("implements a durable dual-report generation pipeline", async () => {
   assert.match(reportRoute, /renderMarkdown/);
   assert.match(reportRoute, /renderPptx/);
   assert.match(reportRoute, /state = 'completed'/);
+  assert.match(reportRoute, /ANTHROPIC_API_KEY/);
+  assert.match(anthropic, /claude-sonnet-5/);
+  assert.match(anthropic, /web_search_20250305/);
+  assert.match(anthropic, /output_config/);
+  assert.match(anthropic, /messages\/batches/);
   assert.match(downloadRoute, /cache-control": "private, no-store"/);
   assert.match(prompt, /不得当作已证实事实/);
   assert.match(prompt, /PPTX：文件输入只抽取文字/);
   assert.match(schema, /deckReports/);
-  assert.match(migration, /CREATE TABLE `deck_reports`/);
+  assert.match(migration, /provider_file_id/);
   assert.match(packageJson, /pptxgenjs/);
 });
