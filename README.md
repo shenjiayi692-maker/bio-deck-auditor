@@ -9,6 +9,19 @@
   <a href="./outputs/">Sample reports</a>
 </p>
 
+<p align="center"><strong>English</strong> · <a href="./README.zh-CN.md">中文</a></p>
+
+What sinks a biotech deck is rarely a false sentence. It is that the numbers do
+not reconcile across slides, and that the certificate belongs to a different legal
+entity than the one raising money.
+
+```bash
+git clone https://github.com/shenjiayi692-maker/bio-deck-auditor && open bio-deck-auditor/outputs/three-deck-blind-audit-2026-07-17.md
+```
+
+A blind audit of three real decks — the fastest way to see what this method
+actually produces. Running the scripts needs a deck of your own.
+
 Bio/MedTech Deck Auditor is an evidence-calibrated diligence workflow for biotech, therapeutics, medical devices, healthcare AI, BCI, and health SaaS fundraising materials. It turns a deck into atomic, testable claims and evaluates them across technology, clinical/regulatory, commercial, team/governance, and capital.
 
 > [!IMPORTANT]
@@ -53,6 +66,7 @@ The repository includes three end-to-end screening examples and a blind-test ret
 | [`bioai-deck-auditor/`](./bioai-deck-auditor/) | Seven-step agent skill with 10 domain packs, three jurisdiction guides, 41 reference files, and seven verification scripts | Usable |
 | [`deck-audit-workbench/`](./deck-audit-workbench/) | Human review surface: upload a deck, review claims, inspect evidence, record decisions, and export Markdown/PPTX | Runnable prototype; not deployed |
 | [`outputs/`](./outputs/) | Three screening reports plus one blind-test retrospective | Sample evidence |
+| [`docs/decisions.md`](./docs/decisions.md) | Six design decisions: the alternative, why it was rejected, what it cost | Reasoning |
 
 ## What the auditor checks
 
